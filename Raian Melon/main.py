@@ -22,6 +22,15 @@ def ocisti_tekst(tekst):
 
     return lista_rijeci
        
+def broji_rijeci(lista_rijeci):
+    rijecnik = {}
+    for rijec in lista_rijeci:
+        if rijec in rijecnik:
+            rijecnik[rijec] += 1
+        else:
+            rijecnik[rijec] = 1
+    return rijecnik
+
 if __name__=="__main__":
     filepath = "tekst.txt"
     print(f"Učitavam tekst iz datoteke: {filepath}")
@@ -40,3 +49,8 @@ if __name__=="__main__":
     else:
         print("Greška pri očišćavanju teksta.")
         
+    rijeci_brojanje = broji_rijeci(ucitani_tekst)
+    
+    print("Broj ponavljanja riječi:")
+    for rijec, broj in sorted(rijeci_brojanje.items(), key=lambda x: x[1], reverse=True):
+        print(f"{rijec}: {broj}")
