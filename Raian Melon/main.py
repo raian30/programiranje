@@ -31,6 +31,27 @@ def broji_rijeci(lista_rijeci):
             rijecnik[rijec] = 1
     return rijecnik
 
+STOP_WORDS = ['i', 'u', 'na', 'je', 'se', 'su', 's', 'za', 'o', 'a', 'pa', 'te', 'li', 'da']
+
+def ukloni_stop_words(rjecnik_frekvencija, stop_words_lista):
+    novi_rjecnik = {}
+    for rijec, frekvencija in rjecnik_frekvencija.items():
+        if rijec not in stop_words_lista:
+            novi_rjecnik[rijec] = frekvencija
+    return novi_rjecnik
+
+def sortiraj_i_ispisi(rjecnik_frekvencija, broj_rijeci=15):
+    sortirana_lista = sorted(rjecnik_frekvencija.items(), key=lambda x: x[1], reverse=True)
+    print(f"--- Top {broj_rijeci} najčešćih riječi ---")
+    index = 1
+    for rijec_frekvencija in sortirana_lista[:broj_rijeci]:
+        rijec = rijec_frekvencija[0]
+        frekvencija = rijec_frekvencija[1]
+        print(f"{index}. {rijec}: {frekvencija}")
+        index += 1
+    print("-" * 30)
+
+
 if __name__=="__main__":
     filepath = "tekst.txt"
     print(f"Učitavam tekst iz datoteke: {filepath}")
@@ -46,11 +67,12 @@ if __name__=="__main__":
     if ucitani_tekst:
         print("Očišćeni tekst je:")
         print(ucitani_tekst)
+                
+        rijeci_brojanje = broji_rijeci(ucitani_tekst)
+        
+        ocisceni_rijecnik = ukloni_stop_words(rijeci_brojanje, STOP_WORDS)
+
+        # Sortiranje i ispis
+        sortiraj_i_ispisi(ocisceni_rijecnik)
     else:
         print("Greška pri očišćavanju teksta.")
-        
-    rijeci_brojanje = broji_rijeci(ucitani_tekst)
-    
-    print("Broj ponavljanja riječi:")
-    for rijec, broj in sorted(rijeci_brojanje.items(), key=lambda x: x[1], reverse=True):
-        print(f"{rijec}: {broj}")
